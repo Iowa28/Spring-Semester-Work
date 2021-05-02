@@ -1,0 +1,141 @@
+nav.navbar .dropdown:hover > .dropdown-menu {
+    display: block;
+}
+
+.header-nav {
+    padding-left: 900px;
+}
+
+.catalog {
+    padding-top: 35px;
+}
+
+.catalog-header {
+    text-align: center;
+    padding-top: 35px;
+    padding-bottom: 30px;
+}
+
+.item {
+    width: 250px;
+    height: 475px;
+}
+
+.item-cost {
+    position: absolute;
+    bottom: 10px;
+}
+
+.item-link {
+    color: #75768d;
+    text-decoration: none;
+    transition: background .1s linear, color .1s linear;
+}
+.item-link:hover {
+    color: #303039;
+    text-decoration: none;
+}
+
+/* Sign In & Sign Up */
+
+.sign-in-form {
+    padding-top: 20px;
+    width: 65%;
+    padding-left: 500px;
+}
+
+.sign-in-header {
+    width: 100%;
+    text-align: center;
+    padding-bottom: 10px;
+}
+
+.sign-up-ref {
+    padding-top: 20px;
+    text-align: center;
+}
+
+.sign-up-link {
+    text-decoration: none;
+    color: #212529;
+    font-size: 20px;
+    transition: background .1s linear, color .1s linear;
+}
+.sign-up-link:hover {
+    color: #4e555b;
+    text-decoration: none;
+}
+
+
+/* Game Page */
+
+.game-blog {
+    padding: 30px;
+
+}
+
+.game-first {
+    display: flex;
+    padding-bottom: 30px;
+    padding-left: 20px;
+}
+
+.game-intro {
+    width: 40%;
+    padding-left: 50px;
+}
+
+.game-image {
+    height: 600px;
+}
+
+.game-buy {
+    width: 100%;
+    margin: 20px 125px;
+}
+
+.game-name {
+    padding-bottom: 150px;
+}
+
+.game-cost {
+    text-align: center;
+    font-size: 35px;
+}
+
+.game-buy-btn {
+    padding-top: 15px;
+    align-items: center;
+    padding-left: 190px;
+}
+
+.game-search {
+    padding-bottom: 10px;
+}
+
+.game-second {
+    padding-bottom: 30px;
+}
+
+.game-slider-button {
+    padding-bottom: 15px;
+    padding-left: 125px;
+}
+
+.game-text {
+    font-size: 17px;
+}
+
+.game-characteristic {
+
+}
+
+.game-chr-item {
+    display: flex;
+    font-size: 17px;
+}
+
+.game-chr-title {
+    margin-right: 15px;
+    font-weight: 600;
+}

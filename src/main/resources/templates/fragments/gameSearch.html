@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<div class="game-search" th:fragment="search">
+    <form th:action="@{/home/filtered/}" method="post">
+        <div class="form-group">
+            <input th:name="name" class="form-control" type="search" placeholder="Поиск игры">
+        </div>
+<!--        <input class="btn btn-success" type="submit" value="Поиск">-->
+    </form>
+</div>
+
+<div class="btn-group" th:fragment="down-menu (categories)">
+    <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">
+        Жанр
+        <span class="caret"></span>
+    </button>
+    <div class="dropdown-menu">
+        <th:block th:each="category : ${categories}">
+            <a href="#" th:text="${category.getName()}" class="dropdown-item"></a>
+        </th:block>
+    </div>
+</div>
+</body>
+</html>
