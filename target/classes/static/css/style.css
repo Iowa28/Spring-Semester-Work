@@ -139,3 +139,14 @@ nav.navbar .dropdown:hover > .dropdown-menu {
     margin-right: 15px;
     font-weight: 600;
 }
+
+
+/* Show more */
+
+.show-more {
+    width: 100%;
+    height: 100%;
+    margin-left: 475px;
+    padding-bottom: 30px;
+    padding-top: 20px;
+}

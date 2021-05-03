@@ -12,13 +12,13 @@
 </div>
 
 <div class="btn-group" th:fragment="down-menu (categories)">
-    <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">
+    <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" style="font-size: 20px">
         Жанр
         <span class="caret"></span>
     </button>
     <div class="dropdown-menu">
         <th:block th:each="category : ${categories}">
-            <a href="#" th:text="${category.getName()}" class="dropdown-item"></a>
+            <a th:href="@{/home/genre/{name}(name=${category.getName()})}" th:text="${category.getName()}" class="dropdown-item"></a>
         </th:block>
     </div>
 </div>

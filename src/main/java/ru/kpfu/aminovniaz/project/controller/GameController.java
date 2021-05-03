@@ -1,20 +1,20 @@
 package ru.kpfu.aminovniaz.project.controller;
 
-import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import ru.kpfu.aminovniaz.project.model.Game;
 import ru.kpfu.aminovniaz.project.service.GameService;
 
 import javax.annotation.security.PermitAll;
+import java.util.Collections;
 import java.util.List;
 
 @Controller
@@ -26,22 +26,30 @@ public class GameController {
     @PermitAll
     @RequestMapping(value = "/home",method = RequestMethod.GET)
     public String homePage(ModelMap map) {
+        Page<Game> pages = gameService.getPageGames();
+
         map.addAttribute("header", "Главная");
-        map.addAttribute("games", gameService.getAllGames());
+        //map.addAttribute("games", gameService.getAllGames());
+        map.addAttribute("games", pages.getContent());
         map.addAttribute("categories", gameService.getAllGameGenre());
+
         return "homePage";
+    }
+
+    @PermitAll
+    @RequestMapping(value = "/showMore", method = RequestMethod.GET)
+    @ResponseBody
+    public String showMore() {
+        return gameService.getLastGamesResponseBody();
     }
 
     @PermitAll
     @RequestMapping(value = "/home/filtered", method = RequestMethod.POST)
     public String homePageFiltered(@RequestParam("name") String name, ModelMap map) {
-        List<Game> games = null;
+        List<Game> games = Collections.emptyList();
         if (!StringUtils.isEmpty(name) && !name.equals(" ")) {
             games = gameService.getFilteredGames(name.toUpperCase());
 
-            if (games.isEmpty()) {
-                System.out.println("EMPTY");
-            }
             map.addAttribute("header", "По запросу " + name + " найдено: " + games.size());
         }
         else {
@@ -55,10 +63,10 @@ public class GameController {
     @PermitAll
     @RequestMapping(value = "/home/genre/{name}", method = RequestMethod.GET)
     public String getGamesByGenre(@PathVariable String name, ModelMap map) {
-        List<Game> games = null;
+        List<Game> games = gameService.getGamesByGenre(name);
 
         map.addAttribute("games", games);
-        map.addAttribute("header", "Игр с жанром " + name + ":" + games.size());
+        map.addAttribute("categories", gameService.getAllGameGenre());
         return "homePage";
     }
 

@@ -6,10 +6,11 @@
     <script th:src="@{/js/jquery-1.9.1.min.js}"></script>
     <script th:src="@{/js/bootstrap.bundle.js}"></script>
     <script th:src="@{/js/button_highlight.js}"></script>
+    <script th:src="@{/js/show_more.js}"></script>
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" type="text/css">
     <link rel="stylesheet" th:href="@{/css/style.css}" type="text/css">
 
-    <title>Магазин игр</title>
+    <title>Каталог</title>
 </head>
 <body>
 
@@ -32,17 +33,22 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-3 col-xs-3" th:each="game :${games}" style="margin-bottom: 30px">
-                    <div class="card item">
-                        <img th:src="${game.getCover()}" class="card-img-top" height="350" width="200" alt="">
-                        <div class="card-body">
-                            <h5 class="card-title" style="text-align: center">
-                                <a th:href="@{/home/game/{id}(id=${game.getId()})}" th:text="${game.getName()}" class="item-link"></a>
-                            </h5>
-                            <p class="card-text item-cost" th:text="${game.getCost()}"></p>
-                        </div>
-                    </div>
+
+                    <div th:insert="fragments/gameCard :: item(${game})"></div>
+
                 </div>
+
             </div>
+        </div>
+    </div>
+
+    <div id="example">
+    </div>
+
+
+    <div class="show-more">
+        <div class="container">
+            <button id="more" class="btn btn-dark" style="font-size: 20px">Показать еще</button>
         </div>
     </div>
 

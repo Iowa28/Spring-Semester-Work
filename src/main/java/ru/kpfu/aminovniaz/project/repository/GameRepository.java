@@ -13,10 +13,12 @@ import java.util.Optional;
 
 @Repository
 @Transactional
-public interface GameRepository extends JpaRepository<Game, Long>, JpaSpecificationExecutor<Game> {
+public interface GameRepository extends JpaRepository<Game, Long>, JpaSpecificationExecutor<Game>{
     Optional<Game> findByName(String name);
 
     Optional<Game> findById(Long id);
+
+
 
     @Query("SELECT g FROM Game g WHERE g.name LIKE %:name%")
     List<Game> searchByNameStartWith(@Param("name") String name);
