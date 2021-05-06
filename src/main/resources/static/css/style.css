@@ -6,6 +6,8 @@ nav.navbar .dropdown:hover > .dropdown-menu {
     padding-left: 900px;
 }
 
+/* Catalog */
+
 .catalog {
     padding-top: 35px;
 }
@@ -149,4 +151,37 @@ nav.navbar .dropdown:hover > .dropdown-menu {
     margin-left: 475px;
     padding-bottom: 30px;
     padding-top: 20px;
+}
+
+/* Error */
+
+.error-block {
+    padding-top: 100px;
+    padding-bottom: 350px;
+}
+
+.error-header {
+    margin-right: 5px;
+
+    text-align: center;
+}
+
+.error-link {
+    color: rgba(0,0,0,.5);
+    margin-bottom: 25px;
+    font-size: 18px;
+    margin-top: 25px;
+
+    text-align: center;
+}
+
+.error-info {
+    font-size: 32px;
+    font-weight: 400;
+
+    text-align: center;
+}
+
+.error-link:hover {
+    color: rgba(0, 0, 0, 0.75);
 }

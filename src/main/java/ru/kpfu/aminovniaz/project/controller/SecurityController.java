@@ -37,7 +37,7 @@ public class SecurityController {
         if (!result.hasErrors()) {
             signUpService.signUp(userForm);
         } else {
-            //System.out.println("User validation error...");
+            System.out.println("User validation error...");
             return "sign_up";
         }
         return "redirect:/home";

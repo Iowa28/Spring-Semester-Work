@@ -12,7 +12,6 @@ import ru.kpfu.aminovniaz.project.model.UserDetailsImpl;
 public class ProfileController {
 
     @PreAuthorize("isAuthenticated()")
-    //@PreAuthorize("hasAuthority('ADMIN')")
     @RequestMapping(value = "/profile", method = RequestMethod.GET)
     public String getProfilePage(@AuthenticationPrincipal UserDetailsImpl user, ModelMap map) {
         System.out.println(user.getUsername());

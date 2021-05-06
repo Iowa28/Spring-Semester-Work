@@ -2,9 +2,6 @@ package ru.kpfu.aminovniaz.project.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -74,15 +71,8 @@ public class GameController {
     @PreAuthorize("isAuthenticated()")
     @RequestMapping(value = "/home/game/{id}", method = RequestMethod.GET)
     public String getGame(@PathVariable String id, ModelMap map) {
-        try {
-            Game someGame = gameService.getGameById(Long.parseLong(id));
-            if (someGame == null) {
-                throw new Exception("No game here");
-            }
-            map.addAttribute("game", someGame);
-        } catch (Exception e) {
-            System.out.println("NO GAME HERE");
-        }
+        Game someGame = gameService.getGameById(Long.parseLong(id));
+        map.addAttribute("game", someGame);
 
         return "game";
     }

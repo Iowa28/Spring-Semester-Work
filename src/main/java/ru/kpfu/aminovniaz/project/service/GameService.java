@@ -9,6 +9,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import ru.kpfu.aminovniaz.project.dto.GameForm;
+import ru.kpfu.aminovniaz.project.exception.NotFoundException;
 import ru.kpfu.aminovniaz.project.model.Game;
 import ru.kpfu.aminovniaz.project.model.GameGenre;
 import ru.kpfu.aminovniaz.project.model.GameInfo;
@@ -66,16 +67,16 @@ public class GameService {
 
     public List<GameInfo> getAllGameInfos() { return gameInfoRepo.findAll(); }
 
-    public Game getGameByName(String name) throws Exception {
-        return gameRepo.findByName(name).orElseThrow(() -> new Exception("Didn't find any game"));
+    public Game getGameByName(String name) {
+        return gameRepo.findByName(name).orElseThrow(() -> new NotFoundException("Не удалось найти данную игру"));
     }
 
     public GameGenre getGameGenreById(Long id) {
-        return gameGenreRepo.findById(id).orElseThrow(() -> new IllegalArgumentException("ERROR"));
+        return gameGenreRepo.findById(id).orElseThrow(() -> new NotFoundException("Не удалось найти данный жанр игры"));
     }
 
-    public Game getGameById(Long id) throws Exception {
-        return gameRepo.findById(id).orElseThrow(() -> new Exception("Didn't find any game"));
+    public Game getGameById(Long id) {
+        return gameRepo.findById(id).orElseThrow(() -> new NotFoundException("Не удалось найти данную игру"));
     }
 
 
@@ -119,7 +120,7 @@ public class GameService {
 
     public List<Game> getGamesByGenre(String name) {
         GameGenre gameGenre = gameGenreRepo.findByName(name).orElseThrow(() ->
-                new IllegalArgumentException("No game genre here"));
+                new NotFoundException("Не удалось найти данный жанр игры"));
 
         List<Game> games = gameRepo.findAll((Specification<Game>) (root, criteriaQuery, criteriaBuilder) -> {
             Predicate p = criteriaBuilder.conjunction();
