@@ -133,6 +133,16 @@ public class GameService {
         return games;
     }
 
+    public int getTotalCost(List<Game> games) {
+        int totalCost = 0;
+
+        for (Game game : games) {
+            totalCost += game.getCost();
+        }
+
+        return totalCost;
+    }
+
 
     private String prepareAjaxResponse(List<Game> games) {
         String response = "";

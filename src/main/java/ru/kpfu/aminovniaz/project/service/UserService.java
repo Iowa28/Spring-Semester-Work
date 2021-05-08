@@ -1,11 +1,13 @@
 package ru.kpfu.aminovniaz.project.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import ru.kpfu.aminovniaz.project.exception.NotFoundException;
 import ru.kpfu.aminovniaz.project.model.User;
 import ru.kpfu.aminovniaz.project.model.UserDetailsImpl;
 import ru.kpfu.aminovniaz.project.repository.UserRepository;
@@ -26,5 +28,11 @@ public class UserService implements UserDetailsService {
         return new UserDetailsImpl(user);
     }
 
+    public User getCurrentUser() {
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User currentUser = userRepo.findByUsername(userDetails.getUsername())
+                .orElseThrow(() -> new NotFoundException());
 
+        return currentUser;
+    }
 }

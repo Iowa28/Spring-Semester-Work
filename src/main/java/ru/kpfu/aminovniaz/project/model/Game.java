@@ -3,6 +3,7 @@ package ru.kpfu.aminovniaz.project.model;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Data
 @Getter
@@ -20,6 +21,9 @@ public class Game {
     private String annotation;
     private String cover;
     private int cost;
+
+    @ManyToMany(mappedBy = "purchasedGames", fetch = FetchType.EAGER)
+    private List<User> users;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private GameGenre gameGenre;

@@ -28,7 +28,23 @@
 
             <h4 th:text="${game.getCost()} + ' ₽'" class="game-cost"></h4>
             <div class="game-buy-btn">
-                <button id="btn_buy" class="btn btn-secondary" style="font-size: 30px; width: 200px">В корзину</button>
+
+                <div th:if="${isInBasket}">
+                    <button class="btn btn-success game-page-btn">Добавлено</button>
+                </div>
+                <div th:unless="${isInBasket}">
+
+                    <div th:if="${isPurchased}">
+                        <button class="btn btn-primary game-page-btn">Куплено</button>
+                    </div>
+                    <div th:unless="${isPurchased}">
+                        <button id="btn_buy" class="btn btn-secondary game-page-btn">
+                            <a th:href="@{/basket/add/{id}(id=${game.getId()})}" class="game-buy-link">В корзину</a>
+                        </button>
+                    </div>
+
+                </div>
+
             </div>
 
         </div>

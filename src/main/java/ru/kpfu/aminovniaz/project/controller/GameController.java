@@ -8,6 +8,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import ru.kpfu.aminovniaz.project.model.Game;
+import ru.kpfu.aminovniaz.project.service.BasketService;
 import ru.kpfu.aminovniaz.project.service.GameService;
 
 import javax.annotation.security.PermitAll;
@@ -19,6 +20,8 @@ public class GameController {
 
     @Autowired
     private GameService gameService;
+    @Autowired
+    private BasketService basketService;
 
     @PermitAll
     @RequestMapping(value = "/home",method = RequestMethod.GET)
@@ -67,12 +70,13 @@ public class GameController {
         return "homePage";
     }
 
-    //TODO: Exception Handling
     @PreAuthorize("isAuthenticated()")
     @RequestMapping(value = "/home/game/{id}", method = RequestMethod.GET)
     public String getGame(@PathVariable String id, ModelMap map) {
         Game someGame = gameService.getGameById(Long.parseLong(id));
         map.addAttribute("game", someGame);
+        map.addAttribute("isInBasket", basketService.isGameInBasket(someGame));
+        map.addAttribute("isPurchased", basketService.gameIsPurchased(someGame));
 
         return "game";
     }

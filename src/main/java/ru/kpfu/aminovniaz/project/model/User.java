@@ -3,6 +3,7 @@ package ru.kpfu.aminovniaz.project.model;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Data
 @Getter
@@ -19,6 +20,14 @@ public class User {
     private String username;
     private String email;
     private String password;
+    @Column(name = "current_money")
+    private int currentMoney;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "user_games",
+            joinColumns = {@JoinColumn(name = "usr_id", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "game_id", referencedColumnName = "id")})
+    private List<Game> purchasedGames;
 
     @Enumerated(value = EnumType.STRING)
     private Role role;
