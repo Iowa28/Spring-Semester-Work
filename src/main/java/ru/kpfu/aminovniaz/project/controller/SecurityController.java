@@ -33,14 +33,14 @@ public class SecurityController {
 
     @PermitAll
     @RequestMapping(value = "/signUp", method = RequestMethod.POST)
-    public String signUp(@Valid UserForm userForm, BindingResult result, ModelMap map) {
+    public String signUp(@Valid UserForm userForm, BindingResult result) {
         if (!result.hasErrors()) {
             signUpService.signUp(userForm);
         } else {
             System.out.println("User validation error...");
             return "sign_up";
         }
-        return "redirect:/home";
+        return "redirect:/signIn";
     }
 
 }

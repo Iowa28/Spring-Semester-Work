@@ -10,9 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ru.kpfu.aminovniaz.project.dto.GameForm;
-import ru.kpfu.aminovniaz.project.model.Game;
 import ru.kpfu.aminovniaz.project.service.GameService;
-
 import javax.validation.Valid;
 
 @Controller
@@ -39,8 +37,7 @@ public class AdminController {
     @RequestMapping(value = "/games", method = RequestMethod.POST)
     public String addGame(@Valid GameForm gameForm,
                           BindingResult result,
-                          RedirectAttributes redirectAttributes,
-                          ModelMap map) {
+                          RedirectAttributes redirectAttributes) {
         if (!result.hasErrors()) {
             gameService.addGame(gameForm);
             redirectAttributes.addFlashAttribute("message", "Game '" + gameForm.getName() + "' has been added.");

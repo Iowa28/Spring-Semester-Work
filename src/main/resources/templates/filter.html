@@ -1,21 +1,16 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <script th:src="@{/js/jquery-1.9.1.min.js}"></script>
     <script th:src="@{/js/bootstrap.bundle.js}"></script>
-    <script th:src="@{/js/button_highlight.js}"></script>
-    <script th:src="@{/js/show_more.js}"></script>
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" type="text/css">
     <link rel="stylesheet" th:href="@{/css/style.css}" type="text/css">
-
-    <title>Каталог</title>
+    <title>Поиск</title>
 </head>
 <body>
 
 <header th:insert="fragments/header :: header"></header>
-<input id="header_btn" type="hidden" value="home">
 
 <div class="catalog">
 
@@ -24,10 +19,9 @@
 
     <div class="catalog-header">
         <div class="container">
-            <h1>Главная</h1>
+            <h1 th:text="${header}"></h1>
         </div>
     </div>
-
 
     <div class="cards">
         <div class="container">
@@ -40,13 +34,9 @@
         </div>
     </div>
 
-    <div class="show-more">
-        <div class="container">
-            <button id="more" class="btn btn-dark" style="font-size: 20px">Показать еще</button>
-        </div>
-    </div>
-
     <footer th:insert="fragments/footer :: footer"></footer>
+
 </div>
+
 </body>
 </html>

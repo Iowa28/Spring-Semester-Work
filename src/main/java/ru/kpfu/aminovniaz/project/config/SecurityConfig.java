@@ -8,7 +8,6 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
@@ -32,32 +31,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private DataSource dataSource;
 
-    /*
-    @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userService()).passwordEncoder(passwordEncoder());
-    }
-
-     */
-
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
-        //httpSecurity.csrf().disable();
         httpSecurity
-//                .authorizeRequests()
-//                .antMatchers("/", "/signUp").permitAll()
-//                .antMatchers("/profile", "/home").authenticated()
-//                .antMatchers("/users").hasAuthority("ADMIN")
+                .authorizeRequests()
+                .antMatchers("/swagger-ui.html").hasAuthority("ADMIN")
+                .and()
+                .csrf().ignoringAntMatchers("/admin/user-rest/users/**")
+                .and()
                 .formLogin()
-                .loginPage("/signIn").defaultSuccessUrl("/home").failureUrl("/signIn?error")
-                //.permitAll()
+                .loginPage("/signIn").defaultSuccessUrl("/profile").failureUrl("/signIn?error")
                 .and()
                 .logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout", "GET"))
                 .logoutSuccessUrl("/home")
                 .invalidateHttpSession(true)
                 .deleteCookies("JSESSIONID")
-                //.permitAll()
                 .and()
                 .rememberMe()
                 .rememberMeParameter("remember-me").tokenRepository(persistentTokenRepository());

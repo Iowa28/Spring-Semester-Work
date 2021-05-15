@@ -28,8 +28,6 @@ public class GameController {
     public String homePage(ModelMap map) {
         Page<Game> pages = gameService.getPageGames();
 
-        map.addAttribute("header", "Главная");
-        //map.addAttribute("games", gameService.getAllGames());
         map.addAttribute("games", pages.getContent());
         map.addAttribute("categories", gameService.getAllGameGenre());
 
@@ -57,7 +55,8 @@ public class GameController {
         }
 
         map.addAttribute("games", games);
-        return "homePage";
+        map.addAttribute("categories", gameService.getAllGameGenre());
+        return "filter";
     }
 
     @PermitAll
@@ -67,7 +66,7 @@ public class GameController {
 
         map.addAttribute("games", games);
         map.addAttribute("categories", gameService.getAllGameGenre());
-        return "homePage";
+        return "filter";
     }
 
     @PreAuthorize("isAuthenticated()")
