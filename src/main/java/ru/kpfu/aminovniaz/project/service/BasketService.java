@@ -2,6 +2,7 @@ package ru.kpfu.aminovniaz.project.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ru.kpfu.aminovniaz.project.aop.ExceptionLog;
 import ru.kpfu.aminovniaz.project.exception.NotFoundException;
 import ru.kpfu.aminovniaz.project.model.Basket;
 import ru.kpfu.aminovniaz.project.model.BasketItem;
@@ -29,9 +30,9 @@ public class BasketService {
     @Autowired
     private BasketRepository basketRepository;
 
-
+    @ExceptionLog
     public void createBasketItem(Long gameId) {
-        Game game = gameRepository.findById(gameId).orElseThrow(() -> new NotFoundException());
+        Game game = gameRepository.findById(gameId).orElseThrow(NotFoundException::new);
         User user = userService.getCurrentUser();
 
         BasketItem basketItem = BasketItem.builder()
@@ -42,8 +43,9 @@ public class BasketService {
         basketItemRepository.save(basketItem);
     }
 
+    @ExceptionLog
     public void removeBasketItem(Long gameId) {
-        Game game = gameRepository.findById(gameId).orElseThrow(() -> new NotFoundException());
+        Game game = gameRepository.findById(gameId).orElseThrow(NotFoundException::new);
         User user = userService.getCurrentUser();
 
         basketItemRepository.removeBasketItemByGameAndUser(game, user);

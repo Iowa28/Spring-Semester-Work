@@ -5,6 +5,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
+import ru.kpfu.aminovniaz.project.aop.ExceptionLog;
 import ru.kpfu.aminovniaz.project.dto.UserForm;
 import ru.kpfu.aminovniaz.project.exception.NotFoundException;
 import ru.kpfu.aminovniaz.project.model.User;
@@ -21,6 +22,7 @@ public class UserService implements UserDetailsService {
     @Autowired
     private UserRepository userRepo;
 
+    @ExceptionLog
     @Override
     public UserDetails loadUserByUsername(String username) throws NotFoundException {
         User user = userRepo.findByUsername(username)
@@ -28,6 +30,7 @@ public class UserService implements UserDetailsService {
         return new UserDetailsImpl(user);
     }
 
+    @ExceptionLog
     public User getCurrentUser() {
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User currentUser = userRepo.findByUsername(userDetails.getUsername())
@@ -40,6 +43,7 @@ public class UserService implements UserDetailsService {
         return from(userRepo.findAll());
     }
 
+    @ExceptionLog
     public UserForm updateUser(Long userId, UserForm userForm) {
         User userForUpdate = userRepo.findById(userId)
                 .orElseThrow(() -> new NotFoundException("Пользователь с таким идентификатором не существует."));
@@ -52,6 +56,7 @@ public class UserService implements UserDetailsService {
         return from(userForUpdate);
     }
 
+    @ExceptionLog
     public void deleteUser(Long userId) {
         User userForDelete = userRepo.findById(userId)
                 .orElseThrow(() -> new NotFoundException("Пользователь с таким идентификатором не существует."));

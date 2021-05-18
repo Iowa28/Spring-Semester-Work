@@ -1,6 +1,5 @@
 package ru.kpfu.aminovniaz.project.controller.rest;
 
-import com.oracle.jrockit.jfr.DataType;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

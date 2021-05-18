@@ -8,6 +8,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import ru.kpfu.aminovniaz.project.aop.ExceptionLog;
 import ru.kpfu.aminovniaz.project.dto.GameForm;
 import ru.kpfu.aminovniaz.project.exception.NotFoundException;
 import ru.kpfu.aminovniaz.project.model.Game;
@@ -33,9 +34,8 @@ public class GameService {
     @Autowired
     private GameInfoRepository gameInfoRepo;
 
-    //TODO: get rid of the hardcode
     private static int gameCount = 16;
-    private static int gameSize = 12;
+    private static final int gameSize = 12;
 
     public List<Game> getAllGames() { return gameRepo.findAll(); }
 
@@ -67,15 +67,19 @@ public class GameService {
 
     public List<GameInfo> getAllGameInfos() { return gameInfoRepo.findAll(); }
 
+    @ExceptionLog
     public Game getGameByName(String name) {
         return gameRepo.findByName(name).orElseThrow(() -> new NotFoundException("Не удалось найти данную игру"));
     }
 
+    @ExceptionLog
     public GameGenre getGameGenreById(Long id) {
         return gameGenreRepo.findById(id).orElseThrow(() -> new NotFoundException("Не удалось найти данный жанр игры"));
     }
 
+    @ExceptionLog
     public Game getGameById(Long id) {
+        System.out.println("Возможно исключение...");
         return gameRepo.findById(id).orElseThrow(() -> new NotFoundException("Не удалось найти данную игру"));
     }
 
@@ -118,6 +122,7 @@ public class GameService {
         return gameRepo.searchByNameStartWith(name);
     }
 
+    @ExceptionLog
     public List<Game> getGamesByGenre(String name) {
         GameGenre gameGenre = gameGenreRepo.findByName(name).orElseThrow(() ->
                 new NotFoundException("Не удалось найти данный жанр игры"));
