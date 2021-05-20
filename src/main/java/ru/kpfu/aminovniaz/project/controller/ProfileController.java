@@ -33,7 +33,7 @@ public class ProfileController {
     @RequestMapping(value = "/profile", method = RequestMethod.GET)
     public String getProfilePage(ModelMap map) {
         User user = userService.getCurrentUser();
-        List<Game> games = user.getPurchasedGames();
+        List<Game> games = gameService.filterGames(user.getPurchasedGames());
 
         map.addAttribute("user", user);
         map.addAttribute("games", games);
@@ -45,6 +45,7 @@ public class ProfileController {
     @RequestMapping(value = "/basket", method = RequestMethod.GET)
     public String getBasketPage(ModelMap map) {
         List<Game> games = basketService.getGamesInBasket();
+        games = gameService.filterGames(games);
         map.addAttribute("games", games);
         map.addAttribute("totalCost", gameService.getTotalCost(games));
         map.addAttribute("basketIsEmpty", games.isEmpty());

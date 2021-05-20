@@ -34,10 +34,7 @@ public class GameGenre {
 
     @Override
     public String toString() {
-        return "GameGenre{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                '}';
+        return name;
     }
 
     public Long getId() {

@@ -12,7 +12,24 @@
 <header th:insert="fragments/header :: header"></header>
 <input id="header_btn" type="hidden" value="admin">
 
-<a th:href="@{/admin/games}">Добавить игру</a>
-<a th:href="@{/swagger-ui.html}">Swagger UI</a>
+<div class="admin-main">
+    <div class="container">
+
+    <h2 class="profile-header">Страница Администратора</h2>
+
+    <div class="admin-main-row">
+        <a th:href="@{/admin/addGame}" class="admin-main-link">Добавить игру</a>
+    </div>
+    <div class="admin-main-row">
+        <a th:href="@{/swagger-ui.html}" class="admin-main-link">Swagger UI</a>
+    </div>
+    <div class="admin-main-row">
+        <a th:href="@{/admin/gamesModify}" class="admin-main-link">Управление играми</a>
+    </div>
+
+    </div>
+</div>
+
+
 </body>
 </html>

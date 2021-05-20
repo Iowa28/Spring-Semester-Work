@@ -22,5 +22,18 @@
         </th:block>
     </div>
 </div>
+
+<div class="btn-group" th:fragment="cost-menu">
+    <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" style="font-size: 20px">
+        Цена
+        <span class="caret"></span>
+    </button>
+    <div class="dropdown-menu">
+        <a th:href="@{/filterCost/{cost}(cost=2000)}" class="dropdown-item">Меньше 2000</a>
+        <a th:href="@{/filterCost/{cost}(cost=1500)}" class="dropdown-item">Меньше 1500</a>
+        <a th:href="@{/filterCost/{cost}(cost=1000)}" class="dropdown-item">Меньше 1000</a>
+        <a th:href="@{/filterCost/{cost}(cost=750)}" class="dropdown-item">Меньше 750</a>
+    </div>
+</div>
 </body>
 </html>

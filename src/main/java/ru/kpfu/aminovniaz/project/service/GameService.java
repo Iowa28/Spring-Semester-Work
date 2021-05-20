@@ -20,6 +20,7 @@ import ru.kpfu.aminovniaz.project.repository.GamePagingRepository;
 import ru.kpfu.aminovniaz.project.repository.GameRepository;
 
 import javax.persistence.criteria.Predicate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -34,42 +35,70 @@ public class GameService {
     @Autowired
     private GameInfoRepository gameInfoRepo;
 
-    private static int gameCount = 16;
-    private static final int gameSize = 12;
-
-    public List<Game> getAllGames() { return gameRepo.findAll(); }
-
-    public Page<Game> getPageGames() {
-        Pageable pageable = PageRequest.of(0, gameSize, Sort.Direction.ASC, "id");
-
-        return gamePagingRepository.findAll(pageable);
+    public List<Game> getAllGames() {
+        //return filterByDeleted(gameRepo.findAll());
+        return gameRepo.findAllByDeletedFalseOrderByIdDesc();
     }
 
-    public List<Game> getLastGames() {
-        initGameCount();
-        Pageable pageable = PageRequest.of(0, gameCount - gameSize, Sort.Direction.DESC, "id");
-
-        return gamePagingRepository.findAll(pageable).getContent();
+    public List<Game> searchByCost(int cost) {
+        return gameRepo.searchByCostLess(cost);
     }
 
-    public String getLastGamesResponseBody() {
-        List<Game> games = getLastGames();
-        String response = prepareAjaxResponse(games);
-        return response;
+    public Page<Game> getPageGames(int count) {
+        Pageable pageable = PageRequest.of(0, count, Sort.Direction.ASC, "id");
+        return gamePagingRepository.findAllByPagination(pageable);
     }
 
-    private void initGameCount() {
-        List<Game> games = getAllGames();
-        gameCount = games.size();
+    public Page<Game> getPageGamesPage(int count, int pageNumber) {
+        Pageable pageable = PageRequest.of(pageNumber, count, Sort.Direction.ASC, "id");
+        return gamePagingRepository.findAllByPagination(pageable);
+    }
+
+    public List<Game> getLastGames(int count) {
+        //Pageable pageable = PageRequest.of(1, count, Sort.Direction.ASC, "id");
+        Pageable pageable = PageRequest.of(0, existGamesCount() - count, Sort.Direction.DESC, "id");
+        List<Game> games = gamePagingRepository.findAllByPaginationNotOrdered(pageable).getContent();
+        return games;
+    }
+
+    public String getLastGamesResponseBody(int count) {
+        List<Game> games = getLastGames(count);
+        return prepareAjaxResponse(games);
+    }
+
+    public int existGamesCount() {
+        return gameRepo.findAllByDeletedFalse().size();
+    }
+
+    public List<Game> filterGames(List<Game> games) {
+        List<Game> filteredGames = new ArrayList<>();
+        for (Game game : games) {
+            if (!game.isDeleted()) {
+                filteredGames.add(game);
+            }
+        }
+        return filteredGames;
     }
 
     public List<GameGenre> getAllGameGenre() { return gameGenreRepo.findAll(); }
 
-    public List<GameInfo> getAllGameInfos() { return gameInfoRepo.findAll(); }
+    private List<Game> filterByDeleted(List<Game> allGames) {
+        List<Game> games = new ArrayList<>();
+        for (Game game : allGames) {
+            if (!game.isDeleted()) {
+                games.add(game);
+            }
+        }
+        return games;
+    }
 
     @ExceptionLog
     public Game getGameByName(String name) {
-        return gameRepo.findByName(name).orElseThrow(() -> new NotFoundException("Не удалось найти данную игру"));
+        Game game = gameRepo.findByName(name).orElseThrow(() -> new NotFoundException("Не удалось найти данную игру"));
+        if (game.isDeleted()) {
+            throw new NotFoundException("Данная игра была удалена");
+        }
+        return game;
     }
 
     @ExceptionLog
@@ -79,8 +108,11 @@ public class GameService {
 
     @ExceptionLog
     public Game getGameById(Long id) {
-        System.out.println("Возможно исключение...");
-        return gameRepo.findById(id).orElseThrow(() -> new NotFoundException("Не удалось найти данную игру"));
+        Game game = gameRepo.findById(id).orElseThrow(() -> new NotFoundException("Не удалось найти данную игру"));
+        if (game.isDeleted()) {
+            throw new NotFoundException("Данная игра была удалена");
+        }
+        return game;
     }
 
 
@@ -95,12 +127,39 @@ public class GameService {
         gameRepo.save(game);
     }
 
+    public void updateGame(GameForm gameForm, Long gameId) {
+        Game game = getGameById(gameId);
+        game.setName(gameForm.getName());
+        game.setCover(gameForm.getCover());
+        game.setCost(gameForm.getCost());
+        game.setAnnotation(gameForm.getAnnotation());
+        Long genreId = Long.parseLong(gameForm.getGenre());
+        game.setGameGenre(getGameGenreById(genreId));
+
+        GameInfo gameInfo = game.getGameInfo();
+        gameInfo.setDeveloper(gameForm.getDeveloper());
+        gameInfo.setPublisher(gameForm.getPublisher());
+        gameInfo.setReleaseDate(gameForm.getReleaseDate());
+
+        gameInfoRepo.save(gameInfo);
+        gameRepo.save(game);
+    }
+
+    public void deleteGame(long gameId) {
+        Game game = getGameById(gameId);
+        System.out.println("Delete game: " + game.getName());
+        game.setDeleted(true);
+        gameRepo.save(game);
+    }
+
     private Game createGame(GameForm gameForm) {
         Game game = Game.builder()
                 .name(gameForm.getName())
                 .annotation(gameForm.getAnnotation())
                 .cover(gameForm.getCover())
-                .cost(gameForm.getCost()).build();
+                .cost(gameForm.getCost())
+                .deleted(false)
+                .build();
         return game;
     }
 
@@ -119,7 +178,7 @@ public class GameService {
     }
 
     public List<Game> getFilteredGames(String name) {
-        return gameRepo.searchByNameStartWith(name);
+        return filterByDeleted(gameRepo.searchByNameStartWith(name));
     }
 
     @ExceptionLog
@@ -135,7 +194,7 @@ public class GameService {
             return p;
         });
 
-        return games;
+        return filterByDeleted(games);
     }
 
     public int getTotalCost(List<Game> games) {

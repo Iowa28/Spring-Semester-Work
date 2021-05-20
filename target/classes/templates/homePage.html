@@ -20,7 +20,13 @@
 <div class="catalog">
 
     <div th:insert="fragments/gameSearch :: search" class="container"></div>
-    <div th:insert="fragments/gameSearch :: down-menu (${categories})" class="container"></div>
+    <div class="container">
+        <div class="catalog-search">
+            <div th:insert="fragments/gameSearch :: down-menu (${categories})" style="padding-right: 20px;"></div>
+            <div th:insert="fragments/gameSearch :: cost-menu"></div>
+        </div>
+    </div>
+
 
     <div class="catalog-header">
         <div class="container">

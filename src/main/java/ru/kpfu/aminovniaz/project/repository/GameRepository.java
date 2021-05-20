@@ -18,7 +18,13 @@ public interface GameRepository extends JpaRepository<Game, Long>, JpaSpecificat
 
     Optional<Game> findById(Long id);
 
-    @Query("SELECT g FROM Game g WHERE g.name LIKE %:name%")
+    @Query("SELECT g FROM Game g WHERE g.name LIKE %:name% ORDER BY g.cost")
     List<Game> searchByNameStartWith(@Param("name") String name);
-    
+
+    @Query("SELECT g FROM Game g WHERE g.cost < :cost ORDER BY g.cost ASC")
+    List<Game> searchByCostLess(@Param("cost") int cost);
+
+    List<Game> findAllByDeletedFalseOrderByIdDesc();
+
+    List<Game>  findAllByDeletedFalse();
 }

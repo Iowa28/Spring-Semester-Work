@@ -12,6 +12,10 @@ nav.navbar .dropdown:hover > .dropdown-menu {
     padding-top: 35px;
 }
 
+.catalog-search {
+    display: flex;
+}
+
 .catalog-header {
     text-align: center;
     padding-top: 35px;
@@ -317,8 +321,56 @@ nav.navbar .dropdown:hover > .dropdown-menu {
 }
 
 
+/* Admin */
 
+.admin-main {
+    padding-top: 30px;
 
+}
 
+.admin-main-row {
+    padding-bottom: 20px;
+}
+
+.admin-main-link {
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 26px;
+
+    color: #75768d;
+    text-decoration: none;
+    transition: background .1s linear, color .1s linear;
+}
+
+.admin-main-link:hover {
+    color: #303039;
+    text-decoration: none;
+}
+
+.games-modify {
+    padding-top: 30px;
+}
+
+.game-modify-item {
+    display: flex;
+    padding-bottom: 50px;
+}
+
+.game-modify-form {
+    width: 100%;
+    margin-left: 50px;
+}
+
+.game-modify-form-group {
+    margin-bottom: 1rem;
+    justify-content: space-between;
+}
+
+.game-modify-pagination {
+    padding-bottom: 30px;
+    padding-left: 150px;
+    padding-top: 20px;
+
+}
 
 

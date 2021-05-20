@@ -21,6 +21,8 @@ public class Game {
     private String annotation;
     private String cover;
     private int cost;
+    @Column(name = "deleted")
+    private boolean deleted;
 
     @ManyToMany(mappedBy = "purchasedGames", fetch = FetchType.EAGER)
     private List<User> users;

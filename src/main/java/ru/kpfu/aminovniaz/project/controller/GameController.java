@@ -1,5 +1,6 @@
 package ru.kpfu.aminovniaz.project.controller;
 
+import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -23,22 +24,30 @@ public class GameController {
     @Autowired
     private BasketService basketService;
 
+    private static final int gamesCountInCatalog = 12;
+
     @PermitAll
     @RequestMapping(value = "/home",method = RequestMethod.GET)
     public String homePage(ModelMap map) {
-        Page<Game> pages = gameService.getPageGames();
-
+        Page<Game> pages = gameService.getPageGames(gamesCountInCatalog);
         map.addAttribute("games", pages.getContent());
         map.addAttribute("categories", gameService.getAllGameGenre());
-
         return "homePage";
+    }
+
+    @PermitAll
+    @RequestMapping(value = "/filterCost/{cost}",method = RequestMethod.GET)
+    public String searchByCost(@PathVariable String cost, ModelMap map) {
+        map.addAttribute("games", gameService.searchByCost(Integer.parseInt(cost)));
+        map.addAttribute("categories", gameService.getAllGameGenre());
+        return "filter";
     }
 
     @PermitAll
     @RequestMapping(value = "/showMore", method = RequestMethod.GET)
     @ResponseBody
     public String showMore() {
-        return gameService.getLastGamesResponseBody();
+        return gameService.getLastGamesResponseBody(gamesCountInCatalog);
     }
 
     @PermitAll

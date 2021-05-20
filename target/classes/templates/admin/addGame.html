@@ -21,7 +21,7 @@
         </div>
 
 
-        <form th:action="@{/admin/games}" th:object="${gameForm}" method="post">
+        <form th:action="@{/admin/addGame}" th:object="${gameForm}" method="post">
             <div class="form-group">
                 <label>Название</label>
                 <input type="text" class="form-control" name="name" th:field="*{name}"/>
@@ -36,7 +36,7 @@
 
             <div class="form-group">
                 <label>URL Обложки</label>
-                <input type="text" class="form-control" name="cover"/>
+                <input type="text" class="form-control" name="cover" th:field="*{cover}"/>
                 <p th:if="${#fields.hasErrors('cover')}" th:errors="*{cover}"></p>
             </div>
 
