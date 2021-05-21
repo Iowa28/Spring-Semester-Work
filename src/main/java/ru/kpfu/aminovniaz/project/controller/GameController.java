@@ -26,6 +26,8 @@ public class GameController {
 
     private static final int gamesCountInCatalog = 12;
 
+    private static final int newsCount = 4;
+
     @PermitAll
     @RequestMapping(value = "/home",method = RequestMethod.GET)
     public String homePage(ModelMap map) {
@@ -83,6 +85,7 @@ public class GameController {
     public String getGame(@PathVariable String id, ModelMap map) {
         Game someGame = gameService.getGameById(Long.parseLong(id));
         map.addAttribute("game", someGame);
+        map.addAttribute("newsItems", gameService.getSteamApiNews(someGame.getGameInfo().getSteamId(), newsCount));
         map.addAttribute("isInBasket", basketService.isGameInBasket(someGame));
         map.addAttribute("isPurchased", basketService.gameIsPurchased(someGame));
 

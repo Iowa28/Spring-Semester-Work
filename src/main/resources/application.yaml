@@ -24,3 +24,9 @@ spring:
   thymeleaf:
     enabled: true
     encoding: UTF-8
+
+#Steam Api
+steam:
+  api:
+    key: AA013441CB64BA677E2A989D1BD53B55
+    url: http://api.steampowered.com

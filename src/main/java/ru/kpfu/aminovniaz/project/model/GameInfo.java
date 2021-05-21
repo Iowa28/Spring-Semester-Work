@@ -6,6 +6,8 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @Data
+@Getter
+@Setter
 @Builder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
@@ -20,21 +22,20 @@ public class GameInfo {
     private String releaseDate;
     private String publisher;
     private String developer;
+    @Column(name = "steam_id")
+    private String steamId;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         GameInfo gameInfo = (GameInfo) o;
-        return Objects.equals(id, gameInfo.id) &&
-                Objects.equals(releaseDate, gameInfo.releaseDate) &&
-                Objects.equals(publisher, gameInfo.publisher) &&
-                Objects.equals(developer, gameInfo.developer);
+        return Objects.equals(id, gameInfo.id) && Objects.equals(releaseDate, gameInfo.releaseDate) && Objects.equals(publisher, gameInfo.publisher) && Objects.equals(developer, gameInfo.developer) && Objects.equals(steamId, gameInfo.steamId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, releaseDate, publisher, developer);
+        return Objects.hash(id, releaseDate, publisher, developer, steamId);
     }
 
     @Override
@@ -44,38 +45,7 @@ public class GameInfo {
                 ", releaseDate='" + releaseDate + '\'' +
                 ", publisher='" + publisher + '\'' +
                 ", developer='" + developer + '\'' +
+                ", steamId='" + steamId + '\'' +
                 '}';
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getReleaseDate() {
-        return releaseDate;
-    }
-
-    public void setReleaseDate(String releaseDate) {
-        this.releaseDate = releaseDate;
-    }
-
-    public String getPublisher() {
-        return publisher;
-    }
-
-    public void setPublisher(String publisher) {
-        this.publisher = publisher;
-    }
-
-    public String getDeveloper() {
-        return developer;
-    }
-
-    public void setDeveloper(String developer) {
-        this.developer = developer;
     }
 }

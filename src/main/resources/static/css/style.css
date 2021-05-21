@@ -160,6 +160,17 @@ nav.navbar .dropdown:hover > .dropdown-menu {
     text-decoration: none;
 }
 
+.news-link {
+    font-size: 20px;
+    color: #75768d;
+    text-decoration: none;
+    transition: background .1s linear, color .1s linear;
+}
+.news-link:hover {
+    color: #303039;
+    text-decoration: none;
+}
+
 
 /* Show more */
 

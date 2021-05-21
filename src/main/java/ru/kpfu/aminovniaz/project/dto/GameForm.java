@@ -42,4 +42,6 @@ public class GameForm {
     @NotNull
     @NotEmpty(message = "Это поле не может быть пустым.")
     private String publisher;
+
+    private String steamId;
 }

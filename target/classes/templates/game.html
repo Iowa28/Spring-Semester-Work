@@ -53,6 +53,7 @@
         <div class="game-slider-button">
             <button id="btn-info" type="button" class="btn btn-outline-secondary active" style="font-size: 20px">Описание</button>
             <button id="btn-chr" type="button" class="btn btn-outline-secondary" style="font-size: 20px">Характеристики</button>
+            <button id="btn-news" type="button" class="btn btn-outline-secondary" style="font-size: 20px">Новости</button>
         </div>
 
         <div class="container">
@@ -83,6 +84,12 @@
                         <p th:text="${game.getGameInfo().getReleaseDate()}"></p>
                     </div>
 
+                </div>
+
+                <div class="game-news">
+                    <div th:each="newsItem : ${newsItems}" style="padding-bottom: 10px;">
+                        <a th:href="${newsItem.getLink()}" th:text="${newsItem.getTitle()}" class="news-link"></a>
+                    </div>
                 </div>
             </div>
         </div>

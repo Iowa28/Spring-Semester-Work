@@ -1,5 +1,11 @@
 package ru.kpfu.aminovniaz.project.service;
 
+import com.fasterxml.jackson.databind.util.JSONPObject;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -10,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import ru.kpfu.aminovniaz.project.aop.ExceptionLog;
 import ru.kpfu.aminovniaz.project.dto.GameForm;
+import ru.kpfu.aminovniaz.project.dto.NewsItem;
 import ru.kpfu.aminovniaz.project.exception.NotFoundException;
 import ru.kpfu.aminovniaz.project.model.Game;
 import ru.kpfu.aminovniaz.project.model.GameGenre;
@@ -18,8 +25,12 @@ import ru.kpfu.aminovniaz.project.repository.GameGenreRepository;
 import ru.kpfu.aminovniaz.project.repository.GameInfoRepository;
 import ru.kpfu.aminovniaz.project.repository.GamePagingRepository;
 import ru.kpfu.aminovniaz.project.repository.GameRepository;
+import springfox.documentation.spring.web.json.Json;
 
 import javax.persistence.criteria.Predicate;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -226,5 +237,38 @@ public class GameService {
         }
 
         return response;
+    }
+
+    @ExceptionLog
+    public List<NewsItem> getSteamApiNews(String steamId, int newsCount) {
+        String requestUrl = " https://api.steampowered.com/ISteamNews/GetNewsForApp/v0002/?appid=" +
+                steamId +"&count=" + newsCount + "&maxlength=300&format=json";
+        List<NewsItem> newsItems = new ArrayList<>();
+
+        try {
+            OkHttpClient client = new OkHttpClient();
+            Request request = new Request.Builder().url(new URL(requestUrl)).build();
+            Response responses = client.newCall(request).execute();
+            String jsonData = responses.body().string();
+
+            JSONObject jsonObject = new JSONObject(jsonData);
+            JSONObject appNews = (JSONObject) jsonObject.get("appnews");
+            JSONArray jsonArray = appNews.getJSONArray("newsitems");
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject jsonItem = (JSONObject) jsonArray.get(i);
+                NewsItem newsItem = NewsItem.builder()
+                        .id(jsonItem.get("appid").toString())
+                        .title(jsonItem.get("title").toString())
+                        .link(jsonItem.get("url").toString())
+                        .build();
+
+                newsItems.add(newsItem);
+            }
+
+        } catch (IOException e) {
+            throw new NotFoundException("Новость не найдена");
+        }
+
+        return newsItems;
     }
 }
