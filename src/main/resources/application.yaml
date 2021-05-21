@@ -1,6 +1,6 @@
 java:
   runtime:
-    version: 8
+    version: 1.8.0_291
 
 spring:
   datasource:
