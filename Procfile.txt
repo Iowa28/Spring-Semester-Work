@@ -1,0 +1,2 @@
+# Procfile
+web: java $JAVA_OPTS -jar artifacts/webapp-runner.jar -jar target/Spring-Semester-Work.jar -Dserver.port=$PORT $JAVA_OPTS

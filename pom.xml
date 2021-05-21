@@ -7,7 +7,7 @@
   <groupId>ru.kpfu.aminovniaz.project</groupId>
   <artifactId>Spring-Semester-Work</artifactId>
   <version>1.0-SNAPSHOT</version>
-  <packaging>war</packaging>
+  <packaging>jar</packaging>
 
   <name>Spring-Semester-Work Maven Webapp</name>
   <!-- FIXME change it to the project's website -->
@@ -15,8 +15,8 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.source>1.7</maven.compiler.source>
-    <maven.compiler.target>1.7</maven.compiler.target>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
   </properties>
 
   <parent>
@@ -26,6 +26,7 @@
   </parent>
 
   <dependencies>
+
     <!-- Boot -->
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -90,7 +91,7 @@
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
-      <version>1.7.6</version>
+      <version>1.7.5</version>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
@@ -131,6 +132,8 @@
 
   <build>
     <finalName>Spring-Semester-Work</finalName>
+    <defaultGoal>package</defaultGoal>
+
     <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
       <plugins>
         <plugin>
@@ -165,18 +168,66 @@
       </plugins>
     </pluginManagement>
       <plugins>
+
+        <plugin>
+          <groupId>com.heroku.sdk</groupId>
+          <artifactId>heroku-maven-plugin</artifactId>
+          <version>3.0.3</version>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-dependency-plugin</artifactId>
+          <version>3.1.2</version>
+          <executions>
+            <execution>
+              <phase>package</phase>
+              <goals>
+                <goal>copy</goal>
+              </goals>
+              <configuration>
+                <artifactItems>
+                  <artifactItem>
+                    <groupId>com.heroku</groupId>
+                    <artifactId>webapp-runner</artifactId>
+                    <version>9.0.31.0</version>
+                    <destFileName>webapp-runner.jar</destFileName>
+                  </artifactItem>
+                </artifactItems>
+                <outputDirectory>artifacts</outputDirectory>
+              </configuration>
+            </execution>
+          </executions>
+        </plugin>
+
+<!--        <plugin>-->
+<!--          <artifactId>maven-war-plugin</artifactId>-->
+<!--          <version>3.3.0</version>-->
+<!--          <configuration>-->
+<!--            <goal>jar:inplace</goal>-->
+<!--            <outputDirectory>artifacts</outputDirectory>-->
+<!--          </configuration>-->
+<!--        </plugin>-->
+
           <plugin>
               <groupId>org.apache.maven.plugins</groupId>
               <artifactId>maven-compiler-plugin</artifactId>
+<!--              <version>3.8.1</version>-->
               <configuration>
-                  <source>8</source>
-                  <target>8</target>
+                <fork>true</fork>
+                <executable> C:\Program Files\Java\jdk1.8.0_291\bin\javac.exe </executable>
+                <compilerVersion>1.8</compilerVersion>
+                <source>1.8</source>
+                <target>1.8</target>
+<!--                <showDeprecation>true</showDeprecation>-->
+<!--                <compilerArgument>-Xlint:unchecked</compilerArgument>-->
               </configuration>
           </plugin>
 
         <plugin>
           <groupId>org.springframework.boot</groupId>
           <artifactId>spring-boot-maven-plugin</artifactId>
+          <version>${parent.version}</version>
           <configuration>
             <excludes>
               <exclude>
